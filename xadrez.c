@@ -17,7 +17,7 @@ void printarTabuleiro();
 void limparTela();
 bool ocuparPosicaoTabuleiro(int x,int y,char tabuleiro[linhas][colunas], int jogador);
 bool posicaoOcupada(int x,int y,char tabuleiro[linhas][colunas]);
-bool alguemGanhou();
+bool alguemGanhou(char tab[linhas][colunas]);
 
 int main() {
     char tabuleiro[linhas][colunas] ={
@@ -32,7 +32,7 @@ int main() {
 
     int jogadorAtual;
     int j=0;
-    while(j<jogadasMinimas||alguemGanhou()==false) {
+    while(j<jogadasMinimas||alguemGanhou(tabuleiro)==false) {
         if(j%2==0)
             jogadorAtual = 1;
         else
