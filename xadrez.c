@@ -46,13 +46,13 @@ int main() {
             if(ocuparPosicaoTabuleiro(x,y,tabuleiro,jogadorAtual) == true)
                 break;
 
-            // limparTela();
+            limparTela();
             printarTabuleiro(tabuleiro);
             printf("A posição (%d,%d) já está ocupada ('%c'), ou não é valida. Insira novamente...\n",
                 x,y,tabuleiro[y][x]);
         }
         j++;
-        // limparTela();
+        limparTela();
         printarTabuleiro(tabuleiro);
     }
     // for(int j=0;j<jogadasMinimas||alguemGanhou()==false;j++) {
@@ -130,17 +130,16 @@ bool alguemGanhou(char tab[linhas][colunas]) {
             if((tab[r][c] == X || tab[r][c] == O) && tab[r][c] == tab[r][c-1]) 
                 consecutivosX++;
 
-            if (consecutivosX == 3) {
-                printf("\nconsecX na linha %d\n",r);
+            if (consecutivosX == 3)
                 return true;
-            }
+            
         }
-        printf("\nconsecX na linha %d: %d\n",r,consecutivosX);
     }
     return false;
 }
 
 void printarTabuleiro(char tab[linhas][colunas]) {
+    printf("\n");
     for(int l=0;l<linhas;l++) {
         printf("\t");
         for(int c=0;c<colunas;c++)
