@@ -8,7 +8,6 @@ typedef int bool;
 
 #define linhas 4
 #define colunas 4
-#define jogadasMinimas 3
 
 #define X 'X'
 #define O 'O'
@@ -32,7 +31,7 @@ int main() {
 
     int jogadorAtual;
     int j=0;
-    while(j<jogadasMinimas||alguemGanhou(tabuleiro)==false) {
+    while(alguemGanhou(tabuleiro)==false) {
         if(j%2==0)
             jogadorAtual = 1;
         else
@@ -55,29 +54,6 @@ int main() {
         limparTela();
         printarTabuleiro(tabuleiro);
     }
-    // for(int j=0;j<jogadasMinimas||alguemGanhou()==false;j++) {
-    //     if(j%2==0)
-    //         jogadorAtual = 1;
-    //     else
-    //         jogadorAtual = 2;
-
-    //     int x;
-    //     int y;
-    //     printf("\nPlayer %d,Digite a posicao a ser marcada(x,y), ex \"3 2\": ",jogadorAtual);
-    //     while(true) {
-    //         scanf("%d %d",&x,&y);
-    //         if(ocuparPosicaoTabuleiro(x,y,tabuleiro,jogadorAtual) == false) {
-    //             limparTela();
-    //             printarTabuleiro(tabuleiro);
-    //             printf("A posição (%d,%d) já está ocupada ('%c'), ou não é valida. Insira novamente...\n",
-    //                 x,y,tabuleiro[y][x]);
-    //             continue;
-    //         }
-    //         break;
-    //     }
-    //     limparTela();
-    //     printarTabuleiro(tabuleiro);
-    // }
 
     printf("Parabéns, o jogador %d venceu!!",jogadorAtual);
     return 0;
@@ -96,23 +72,16 @@ bool ocuparPosicaoTabuleiro(int x,int y,char tabuleiro[linhas][colunas], int jog
 bool alguemGanhou(char tab[linhas][colunas]) {
     // checar consecutivos na vertical
     if((tab[1][1] == X || tab[1][1] == O) && tab[1][1] == tab[2][1]
-        && tab[2][1] == tab[3][1]) {
-        printf("\nconsecY\n");
-        printf("1 1: %2c",tab[1][1]);
+        && tab[2][1] == tab[3][1])
         return true;
-    }
 
     if((tab[1][2] == X || tab[1][2] == O) && tab[1][2] == tab[2][2]
-        && tab[2][2] == tab[3][2]) {
-        printf("\nconsecY\n");
+        && tab[2][2] == tab[3][2])
         return true;
-    }
     
     if((tab[1][3] == X || tab[1][3] == O) && tab[1][3] == tab[2][3]
-        && tab[2][3] == tab[3][3]) {    
-        printf("\nconsecY\n");
+        && tab[2][3] == tab[3][3])
         return true;
-    }
 
     // checar consecutivos na diagonal
     if((tab[1][1] == X || tab[1][1] == O)&&tab[1][1] == tab[2][2]
@@ -162,6 +131,5 @@ void limparTela() {
     #elif _WIN32
         system("cls");
     #else
-
     #endif
 }
