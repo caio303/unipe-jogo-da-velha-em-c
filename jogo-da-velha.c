@@ -7,12 +7,17 @@ typedef int bool;
 #define true 1
 #define false 0
 
+#define nome_arquivo_persistencia "vencedores_jogo_da_velha.txt"
+
 #define linhas 4
 #define colunas 4
 
 #define X 'X'
 #define O 'O'
 
+void jogar();
+void verUltimosResultados();
+void mostrarCreditos();
 void printarTabuleiro();
 void limparTela();
 void setarUtf8eLocale();
@@ -23,6 +28,33 @@ void persistirVencedor(int jogador);
 
 int main() {
     setarUtf8eLocale();
+    int opcao=1;
+    limparTela();
+    while(opcao>0&&opcao<=4) {
+        printf("=-=-=-=-=- Menu -=-=-=-=-=\n1 - Jogar\n2 - Ver ultimos resutados\n3 - Créditos\n4 - Sair...\n");
+        scanf("%d",&opcao);
+        if(opcao==4) {
+            printf("\nFlw!!\n");
+            break;
+        }
+        switch (opcao) {
+        case 1:
+            jogar();
+            break;
+        case 2:
+            verUltimosResultados();
+            break;
+        case 3:
+            mostrarCreditos();
+            break;
+        }
+    }
+
+    system("pause");
+    return 0;
+}
+
+void jogar() {
     char tabuleiro[linhas][colunas] ={
         '0', '1', '2', '3',    /*matriz 4 X 4*/
         '1', '.', '.', '.',
@@ -56,15 +88,20 @@ int main() {
         if(j == 9) {
             printf("Deu velha!\n");
             system("pause");
-            return 0;
+            return;
         }
     }
 
     printf("Parabéns, o jogador %d venceu!!\n",jogadorAtual);
     persistirVencedor(jogadorAtual);
+}
 
-    system("pause");
-    return 0;
+void verUltimosResultados() {
+    printf("\n\nUltimos resultados...\n\n");
+}
+
+void mostrarCreditos() {
+    printf("\nGrupo: \n * Karinny Lemos\n * Caio Alves\n * Alexandre Jahnel\n * Leonardo Rafael\n * José Victor\n\n");
 }
 
 bool ocuparPosicaoTabuleiro(int x,int y,char tabuleiro[linhas][colunas], int jogador) {
@@ -133,9 +170,9 @@ bool posicaoOcupada(int x,int y,char tabuleiro[linhas][colunas]) {
 }
 
 void persistirVencedor(int jogador) {
-    FILE *pt_arquivo = fopen("vencedores_jogo_da_velha.txt","a+");
+    FILE *pt_arquivo = fopen(nome_arquivo_persistencia,"a+");
     if(pt_arquivo == NULL)
-        printf("\nDeu merda na hr de criar o arquivo\n");
+        printf("\nDeu xabu na hr de manipular o arquivo\n");
 
     fprintf(pt_arquivo,"Jogador %d ganhou!\n",jogador);
 }
