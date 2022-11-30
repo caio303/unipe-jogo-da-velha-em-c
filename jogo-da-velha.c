@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<locale.h>
 
 // usar valores booleanos de boa, com true ou false
 typedef int bool;
@@ -14,32 +15,31 @@ typedef int bool;
 
 void printarTabuleiro();
 void limparTela();
+void setarUtf8eLocale();
 bool ocuparPosicaoTabuleiro(int x,int y,char tabuleiro[linhas][colunas], int jogador);
 bool posicaoOcupada(int x,int y,char tabuleiro[linhas][colunas]);
 bool alguemGanhou(char tab[linhas][colunas]);
+void persistirVencedor(int jogador);
 
 int main() {
+    setarUtf8eLocale();
     char tabuleiro[linhas][colunas] ={
         '0', '1', '2', '3',    /*matriz 4 X 4*/
         '1', '.', '.', '.',
         '2', '.', '.', '.',
         '3', '.', '.', '.'};
         
-    printf(" ");
     limparTela();
     printarTabuleiro(tabuleiro);
 
     int jogadorAtual;
     int j=0;
     while(alguemGanhou(tabuleiro)==false) {
-        if(j%2==0)
-            jogadorAtual = 1;
-        else
-            jogadorAtual = 2;
+        jogadorAtual = j%2==0? 1 : 2;
 
         int x;
         int y;
-        printf("\nPlayer %d, digite a posicao a ser marcada(x,y), ex \"3 2\": ",jogadorAtual);
+        printf("\nPlayer %d, digite a posição a ser marcada(x,y), ex \"3 2\": ",jogadorAtual);
         while(true) {
             scanf("%d %d",&x,&y);
             if(ocuparPosicaoTabuleiro(x,y,tabuleiro,jogadorAtual) == true)
@@ -53,9 +53,17 @@ int main() {
         j++;
         limparTela();
         printarTabuleiro(tabuleiro);
+        if(j == 9) {
+            printf("Deu velha!\n");
+            system("pause");
+            return 0;
+        }
     }
 
-    printf("Parabéns, o jogador %d venceu!!",jogadorAtual);
+    printf("Parabéns, o jogador %d venceu!!\n",jogadorAtual);
+    persistirVencedor(jogadorAtual);
+
+    system("pause");
     return 0;
 }
 
@@ -101,7 +109,6 @@ bool alguemGanhou(char tab[linhas][colunas]) {
 
             if (consecutivosX == 3)
                 return true;
-            
         }
     }
     return false;
@@ -125,6 +132,14 @@ bool posicaoOcupada(int x,int y,char tabuleiro[linhas][colunas]) {
     return (tabuleiro[y][x] == X || tabuleiro[y][x] == O);
 }
 
+void persistirVencedor(int jogador) {
+    FILE *pt_arquivo = fopen("vencedores_jogo_da_velha.txt","a+");
+    if(pt_arquivo == NULL)
+        printf("\nDeu merda na hr de criar o arquivo\n");
+
+    fprintf(pt_arquivo,"Jogador %d ganhou!\n",jogador);
+}
+
 void limparTela() {
     #ifdef __linux__
         system("clear");
@@ -132,4 +147,10 @@ void limparTela() {
         system("cls");
     #else
     #endif
+}
+
+void setarUtf8eLocale() {
+    system("chcp 65001");
+    setlocale(LC_ALL, "pt_br");
+    limparTela();
 }
