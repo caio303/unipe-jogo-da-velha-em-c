@@ -60,7 +60,7 @@ void jogar() {
         '1', '.', '.', '.',
         '2', '.', '.', '.',
         '3', '.', '.', '.'};
-        
+
     limparTela();
     printarTabuleiro(tabuleiro);
 
@@ -85,9 +85,9 @@ void jogar() {
         j++;
         limparTela();
         printarTabuleiro(tabuleiro);
-        if(j == 9) {
+        if(j == 9 && alguemGanhou(tabuleiro)==false) {
             printf("Deu velha!\n");
-            system("pause");
+            persistirVencedor(0);
             return;
         }
     }
@@ -107,7 +107,7 @@ void mostrarCreditos() {
 bool ocuparPosicaoTabuleiro(int x,int y,char tabuleiro[linhas][colunas], int jogador) {
     if(posicaoOcupada(x,y,tabuleiro)==true)
         return false;
-    
+
     char charJogador = jogador==1? X : O;
 
     tabuleiro[y][x] = charJogador;
@@ -123,7 +123,7 @@ bool alguemGanhou(char tab[linhas][colunas]) {
     if((tab[1][2] == X || tab[1][2] == O) && tab[1][2] == tab[2][2]
         && tab[2][2] == tab[3][2])
         return true;
-    
+
     if((tab[1][3] == X || tab[1][3] == O) && tab[1][3] == tab[2][3]
         && tab[2][3] == tab[3][3])
         return true;
@@ -141,7 +141,7 @@ bool alguemGanhou(char tab[linhas][colunas]) {
     for(int r=1;r<linhas;r++) {
         int consecutivosX = 1;
         for(int c=1;c<colunas;c++) {
-            if((tab[r][c] == X || tab[r][c] == O) && tab[r][c] == tab[r][c-1]) 
+            if((tab[r][c] == X || tab[r][c] == O) && tab[r][c] == tab[r][c-1])
                 consecutivosX++;
 
             if (consecutivosX == 3)
@@ -174,7 +174,11 @@ void persistirVencedor(int jogador) {
     if(pt_arquivo == NULL)
         printf("\nDeu xabu na hr de manipular o arquivo\n");
 
-    fprintf(pt_arquivo,"Jogador %d ganhou!\n",jogador);
+    if(jogador == 0)
+        fprintf(pt_arquivo,"Deu velha!\n");
+    else
+        fprintf(pt_arquivo,"Jogador %d ganhou!\n",jogador);
+    fclose(pt_arquivo);
 }
 
 void limparTela() {
